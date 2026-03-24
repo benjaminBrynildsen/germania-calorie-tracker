@@ -83,9 +83,17 @@
       background: var(--bg-deeper); border-bottom: 1px solid var(--border);
       padding: 20px 24px; position: sticky; top: 72px; z-index: 90;
     }
+    .filter-header {
+      max-width: 1200px; margin: 0 auto; display: none;
+      align-items: center; justify-content: space-between; cursor: pointer;
+      font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.85rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text);
+    }
+    .filter-header .arrow { transition: transform 0.2s; font-size: 0.7rem; }
+    .filter-header .arrow.open { transform: rotate(180deg); }
     .filter-tabs {
       max-width: 1200px; margin: 0 auto;
-      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-start;
     }
     .filter-tab {
       font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.78rem;
@@ -95,6 +103,11 @@
     }
     .filter-tab:hover { color: var(--text-secondary); border-color: var(--text-muted); }
     .filter-tab.active { background: var(--text); color: #fff; border-color: var(--text); }
+    @media (max-width: 768px) {
+      .filter-header { display: flex; }
+      .filter-tabs { display: none; margin-top: 12px; }
+      .filter-tabs.open { display: flex; }
+    }
 
     /* GRID */
     .grid-container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
@@ -384,6 +397,9 @@
 </section>
 
 <section class="filters">
+  <div class="filter-header" id="filterHeader" onclick="var t=document.getElementById('filterTabs'),a=document.querySelector('.arrow');t.classList.toggle('open');a.classList.toggle('open');">
+    <span id="filterLabel">All Drinks</span> <span class="arrow">▼</span>
+  </div>
   <div class="filter-tabs" id="filterTabs"></div>
 </section>
 
@@ -748,7 +764,16 @@ function renderTabs() {
     `<button class="filter-tab ${c.id === activeCategory ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
   ).join("");
   el.querySelectorAll(".filter-tab").forEach(btn => {
-    btn.onclick = () => { activeCategory = btn.dataset.cat; renderTabs(); renderGrid(); if(typeof scheduleReport==='function')scheduleReport(); };
+    btn.onclick = () => {
+      activeCategory = btn.dataset.cat;
+      renderTabs(); renderGrid();
+      var label=document.getElementById('filterLabel');
+      if(label) label.textContent=btn.textContent;
+      var tabs=document.getElementById('filterTabs'),arrow=document.querySelector('.arrow');
+      if(tabs)tabs.classList.remove('open');
+      if(arrow)arrow.classList.remove('open');
+      if(typeof scheduleReport==='function')scheduleReport();
+    };
   });
 }
 
