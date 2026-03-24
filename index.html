@@ -853,7 +853,7 @@ function renderGrid() {
     const color = getCalColor(n.cal);
     const pct = Math.min(n.cal / 700, 1);
     const offset = CIRCUMFERENCE * (1 - pct);
-    const isSpecial = ["sweet","bridge","artisanal","tea"].includes(drink.category);
+    const isSpecial = drink.category === "seasonal";
 
     const allergenBadges = drink.allergens.map(a => `<span class="card-badge badge-allergen">${a}</span>`).join("");
     const tempButtons = drink.temps.map((t, i) =>
