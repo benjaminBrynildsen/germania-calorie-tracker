@@ -471,43 +471,43 @@ const DRINKS = [
     bases:{ Hot:{cal:195,fat:9,carbs:22,protein:10,sugar:18,milkOz:9}, Iced:{cal:195,fat:9,carbs:22,protein:10,sugar:18,milkOz:9}, Frozen:{cal:354,fat:11,carbs:61,protein:4,sugar:42,milkOz:3} },
     hasMilk:true, hasSweetener:false },
 
-  // CLASSICS
-  { id:"esp", name:"Espresso", category:"classics", desc:"Double shot of our house blend. Bold, smooth, no frills.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot"],
+  // TRADITIONAL
+  { id:"esp", name:"Espresso", category:"traditional", desc:"Double shot of our house blend. Bold, smooth, no frills.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot"],
     bases:{ Hot:{cal:10,fat:0,carbs:1,protein:0,sugar:0,milkOz:0} },
     hasMilk:false, hasSweetener:false },
 
-  { id:"ame", name:"Americano", category:"classics", desc:"Espresso pulled over hot water. Clean and strong.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced"],
+  { id:"ame", name:"Americano", category:"traditional", desc:"Espresso pulled over hot water. Clean and strong.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced"],
     bases:{ Hot:{cal:15,fat:0,carbs:2,protein:1,sugar:0,milkOz:0}, Iced:{cal:15,fat:0,carbs:2,protein:1,sugar:0,milkOz:0} },
     hasMilk:false, hasSweetener:false },
 
-  { id:"lat", name:"Latte", category:"classics", desc:"Silky steamed milk with a double shot of espresso.", allergens:[], contains:["Dairy"], temps:["Hot","Iced","Frozen"],
+  { id:"lat", name:"Latte", category:"traditional", desc:"Silky steamed milk with a double shot of espresso.", allergens:[], contains:["Dairy"], temps:["Hot","Iced","Frozen"],
     // Hot R: espresso(10) + 9oz milk(162) = 172 → ~190 with foam
     // Iced R: espresso(10) + 9oz milk(162) = 172
     // Frozen R: polar 2red(267) + espresso(10) + 3oz milk(54) = 331
     bases:{ Hot:{cal:190,fat:9,carbs:16,protein:10,sugar:15,milkOz:9}, Iced:{cal:172,fat:9,carbs:15,protein:10,sugar:14,milkOz:9}, Frozen:{cal:331,fat:11,carbs:53,protein:4,sugar:37,milkOz:3} },
     hasMilk:true, hasSweetener:false },
 
-  { id:"cap", name:"Cappuccino", category:"classics", desc:"Equal parts espresso, steamed milk, and thick foam.", allergens:[], contains:["Dairy"], temps:["Hot"],
+  { id:"cap", name:"Cappuccino", category:"traditional", desc:"Equal parts espresso, steamed milk, and thick foam.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:120,fat:6,carbs:10,protein:7,sugar:10,milkOz:6} },
     hasMilk:true, hasSweetener:false },
 
-  { id:"cor", name:"Cortado", category:"classics", desc:"Equal parts espresso and warm milk. Simple and perfect.", allergens:[], contains:["Dairy"], temps:["Hot"],
+  { id:"cor", name:"Cortado", category:"traditional", desc:"Equal parts espresso and warm milk. Simple and perfect.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:80,fat:4,carbs:7,protein:5,sugar:6,milkOz:4} },
     hasMilk:true, hasSweetener:false },
 
-  { id:"fw", name:"Flat White", category:"classics", desc:"Velvety microfoam over a ristretto double shot.", allergens:[], contains:["Dairy"], temps:["Hot"],
+  { id:"fw", name:"Flat White", category:"traditional", desc:"Velvety microfoam over a ristretto double shot.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:155,fat:8,carbs:13,protein:9,sugar:12,milkOz:8} },
     hasMilk:true, hasSweetener:false },
 
-  { id:"cb", name:"Cold Brew", category:"classics", desc:"Slow-steeped for a smooth, low-acid finish.", allergens:["DF","GF","Vegan"], contains:[], temps:["Iced"],
+  { id:"cb", name:"Cold Brew", category:"traditional", desc:"Slow-steeped for a smooth, low-acid finish.", allergens:["DF","GF","Vegan"], contains:[], temps:["Iced"],
     bases:{ Iced:{cal:5,fat:0,carbs:0,protein:0,sugar:0,milkOz:0} },
     hasMilk:false, hasSweetener:false },
 
-  { id:"il", name:"Iced Latte", category:"classics", desc:"Chilled milk and espresso over ice.", allergens:[], contains:["Dairy"], temps:["Iced"],
+  { id:"il", name:"Iced Latte", category:"traditional", desc:"Chilled milk and espresso over ice.", allergens:[], contains:["Dairy"], temps:["Iced"],
     bases:{ Iced:{cal:170,fat:8,carbs:14,protein:9,sugar:13,milkOz:9} },
     hasMilk:true, hasSweetener:false },
 
-  { id:"hc", name:"Hot Chocolate", category:"classics", desc:"Rich haus-made chocolate with steamed milk. A warm hug in a cup.", allergens:[], contains:["Dairy"], temps:["Hot"],
+  { id:"hc", name:"Hot Chocolate", category:"traditional", desc:"Rich haus-made chocolate with steamed milk. A warm hug in a cup.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:270,fat:12,carbs:30,protein:11,sugar:24,milkOz:9} },
     hasMilk:true, hasSweetener:true },
 
@@ -541,7 +541,7 @@ const CATEGORIES = [
   { id:"bridge", label:"Bridge" },
   { id:"artisanal", label:"Artisanal" },
   { id:"tea", label:"Tea & More" },
-  { id:"classics", label:"Classics" },
+  { id:"traditional", label:"Traditional" },
   { id:"seasonal", label:"Seasonal" },
   { id:"ingredients", label:"☕ How We Calculate" },
 ];
