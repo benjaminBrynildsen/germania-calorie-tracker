@@ -894,6 +894,18 @@ function renderGrid() {
 renderTabs();
 renderGrid();
 </script>
-<script>if(new URLSearchParams(location.search).has('embed'))document.body.classList.add('embed-mode');</script>
+<script>
+if(new URLSearchParams(location.search).has('embed')){
+  document.body.classList.add('embed-mode');
+  function reportHeight(){
+    var h=document.documentElement.scrollHeight;
+    parent.postMessage({type:'germania-resize',height:h},'*');
+  }
+  reportHeight();
+  new MutationObserver(reportHeight).observe(document.body,{childList:true,subtree:true,attributes:true});
+  window.addEventListener('resize',reportHeight);
+  setInterval(reportHeight,500);
+}
+</script>
 </body>
 </html>
