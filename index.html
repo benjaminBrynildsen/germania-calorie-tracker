@@ -35,6 +35,10 @@
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
+    body.embed-mode { background: #ffffff; }
+    body.embed-mode .nav { display: none; }
+    body.embed-mode .hero { display: none; }
+    body.embed-mode .filters { top: 0; }
 
     /* NAV */
     .nav {
@@ -890,5 +894,6 @@ function renderGrid() {
 renderTabs();
 renderGrid();
 </script>
+<script>if(new URLSearchParams(location.search).has('embed'))document.body.classList.add('embed-mode');</script>
 </body>
 </html>
