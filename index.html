@@ -433,10 +433,11 @@ const DRINKS = [
     hasMilk:true, hasSweetener:true },
 
   { id:"lwm", name:"Lemon White Mocha", category:"sweet", desc:"Bright haus-made lemon syrup meets our white chocolate sauce and espresso.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
+    // WC=extra sauce half, lemon=standard syrup half (per SOP)
     // Hot R: 2 shots(10) + 2 WC sauce @44(88) + 2.5 lemon @24(60) + 9oz milk(162) = 320
-    // Iced R: CB(6) + 9oz milk(162) + 1.5 WC @44(66) + 2 lemon @24(48) = 282
-    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 1.5 WC @44(66) + 2 lemon @24(48) = 441
-    bases:{ Hot:{cal:320,fat:12,carbs:40,protein:11,sugar:32,milkOz:9}, Iced:{cal:282,fat:11,carbs:38,protein:10,sugar:38,milkOz:9}, Frozen:{cal:441,fat:13,carbs:76,protein:5,sugar:61,milkOz:3} },
+    // Iced R: CB(6) + 1.5 WC @44(66) + 2 lemon @24(48) + 9oz milk(162) = 282
+    // Frozen R: polar(267) + CB(4) + 1.5 WC @44(66) + 2 lemon @24(48) + 3oz milk(54) = 439
+    bases:{ Hot:{cal:320,fat:11,carbs:47,protein:11,sugar:45,milkOz:9}, Iced:{cal:282,fat:11,carbs:38,protein:10,sugar:38,milkOz:9}, Frozen:{cal:439,fat:13,carbs:76,protein:5,sugar:61,milkOz:3} },
     hasMilk:true, hasSweetener:true },
 
   { id:"sun", name:"Sunshine Latte", category:"sweet", desc:"Honey and almond syrups with espresso, steamed milk, and a honey drizzle.", allergens:["DF","GF"], contains:[], temps:["Hot","Iced","Frozen"],
