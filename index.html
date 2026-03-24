@@ -852,7 +852,7 @@ function renderGrid() {
 
     const sizes = defaultTemp === 'Hot' ? HOT_SIZES : COLD_SIZES;
     const sizeCups = drink.fixedSize
-      ? `<div class="size-cups"><span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:0.05em;color:var(--text);">${drink.fixedSize.oz}</span></div>`
+      ? `<div class="size-cups"><div class="size-cup active" style="cursor:default;border-color:var(--accent);">${cupSVG('small')}<span class="size-cup-label" style="color:var(--accent);font-weight:700;">${drink.fixedSize.oz}</span></div></div>`
       : `<div class="size-cups">${sizes.map(s => renderCup(drink.id, s, s.key === 'regular')).join('')}</div>`;
 
     const milkSelect = drink.hasMilk ? `<select class="card-select sel-milk" onchange="updateCard('${drink.id}')">
