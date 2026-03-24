@@ -748,7 +748,7 @@ function renderTabs() {
     `<button class="filter-tab ${c.id === activeCategory ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
   ).join("");
   el.querySelectorAll(".filter-tab").forEach(btn => {
-    btn.onclick = () => { activeCategory = btn.dataset.cat; renderTabs(); renderGrid(); };
+    btn.onclick = () => { activeCategory = btn.dataset.cat; renderTabs(); renderGrid(); if(typeof scheduleReport==='function')scheduleReport(); };
   });
 }
 
@@ -897,14 +897,22 @@ renderGrid();
 <script>
 if(new URLSearchParams(location.search).has('embed')){
   document.body.classList.add('embed-mode');
+  var _lastH=0;
   function reportHeight(){
-    var h=document.documentElement.scrollHeight;
-    parent.postMessage({type:'germania-resize',height:h},'*');
+    document.body.style.height='auto';
+    var h=document.body.scrollHeight;
+    if(h!==_lastH){
+      _lastH=h;
+      parent.postMessage({type:'germania-resize',height:h},'*');
+    }
   }
+  var _raf=null;
+  function scheduleReport(){
+    if(!_raf) _raf=requestAnimationFrame(function(){_raf=null;reportHeight();});
+  }
+  new ResizeObserver(scheduleReport).observe(document.body);
+  window.addEventListener('resize',scheduleReport);
   reportHeight();
-  new MutationObserver(reportHeight).observe(document.body,{childList:true,subtree:true,attributes:true});
-  window.addEventListener('resize',reportHeight);
-  setInterval(reportHeight,500);
 }
 </script>
 </body>
