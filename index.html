@@ -899,20 +899,21 @@ if(new URLSearchParams(location.search).has('embed')){
   document.body.classList.add('embed-mode');
   var _lastH=0;
   function reportHeight(){
-    document.body.style.height='auto';
+    // Collapse to 0 so scrollHeight reflects true content height
+    document.documentElement.style.height='0';
+    document.body.style.height='0';
     var h=document.body.scrollHeight;
+    document.documentElement.style.height='';
+    document.body.style.height='';
     if(h!==_lastH){
       _lastH=h;
       parent.postMessage({type:'germania-resize',height:h},'*');
     }
   }
-  var _raf=null;
-  function scheduleReport(){
-    if(!_raf) _raf=requestAnimationFrame(function(){_raf=null;reportHeight();});
-  }
-  new ResizeObserver(scheduleReport).observe(document.body);
-  window.addEventListener('resize',scheduleReport);
-  reportHeight();
+  new MutationObserver(function(){requestAnimationFrame(reportHeight);}).observe(document.body,{childList:true,subtree:true});
+  window.addEventListener('resize',function(){requestAnimationFrame(reportHeight);});
+  setInterval(reportHeight,400);
+  setTimeout(reportHeight,100);
 }
 </script>
 </body>
