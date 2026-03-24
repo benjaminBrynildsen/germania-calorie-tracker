@@ -897,23 +897,14 @@ renderGrid();
 <script>
 if(new URLSearchParams(location.search).has('embed')){
   document.body.classList.add('embed-mode');
-  var _lastH=0;
   function reportHeight(){
-    // Collapse to 0 so scrollHeight reflects true content height
-    document.documentElement.style.height='0';
-    document.body.style.height='0';
-    var h=document.body.scrollHeight;
-    document.documentElement.style.height='';
-    document.body.style.height='';
-    if(h!==_lastH){
-      _lastH=h;
-      parent.postMessage({type:'germania-resize',height:h},'*');
-    }
+    var wrapper=document.querySelector('.grid-container')||document.body;
+    var last=wrapper.lastElementChild;
+    var h=last?last.getBoundingClientRect().bottom+window.scrollY+40:document.body.scrollHeight;
+    parent.postMessage({type:'germania-resize',height:Math.ceil(h)},'*');
   }
-  new MutationObserver(function(){requestAnimationFrame(reportHeight);}).observe(document.body,{childList:true,subtree:true});
-  window.addEventListener('resize',function(){requestAnimationFrame(reportHeight);});
-  setInterval(reportHeight,400);
-  setTimeout(reportHeight,100);
+  setTimeout(reportHeight,200);
+  setInterval(reportHeight,500);
 }
 </script>
 </body>
