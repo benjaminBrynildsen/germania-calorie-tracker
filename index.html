@@ -418,10 +418,11 @@
 const DRINKS = [
   // SWEET COFFEE
   { id:"gbh", name:"The GBH", category:"sweet", desc:"Our most popular drink. White mocha with espresso, steamed milk, and caramel drizzle.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
+    // Sauce pumps: Hot 2,3,4 (S,R,L) / Iced+Frozen 1,2,3 (S,R,L)
     // Hot R: 2 shots(10) + 3 Monin WC @60(180) + 9oz milk(162) + caramel(30) = 382
-    // Iced R: CB 3oz(6) + 9oz milk(162) + 2.5 Monin WC @60(150) + caramel(30) = 348
-    // Frozen R: polar 2red(267) + CB 2oz(4) + 3oz milk(54) + 3 Monin WC @60(180) + caramel(30) = 535
-    bases:{ Hot:{cal:382,fat:11,carbs:54,protein:14,sugar:52,milkOz:9}, Iced:{cal:348,fat:10,carbs:47,protein:12,sugar:46,milkOz:9}, Frozen:{cal:535,fat:13,carbs:90,protein:8,sugar:75,milkOz:3} },
+    // Iced R: CB 3oz(6) + 9oz milk(162) + 2 Monin WC @60(120) + caramel(30) = 318
+    // Frozen R: polar 2red(267) + CB 2oz(4) + 3oz milk(54) + 2 Monin WC @60(120) + caramel(30) = 475
+    bases:{ Hot:{cal:382,fat:11,carbs:54,protein:14,sugar:52,milkOz:9}, Iced:{cal:318,fat:10,carbs:42,protein:12,sugar:41,milkOz:9}, Frozen:{cal:475,fat:12,carbs:80,protein:6,sugar:64,milkOz:3} },
     hasMilk:true, hasSweetener:false },
 
   { id:"hwm", name:"Haus White Mocha", category:"sweet", desc:"Our signature haus-made white chocolate sauce with espresso and steamed milk.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
