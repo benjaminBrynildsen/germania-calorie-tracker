@@ -447,10 +447,11 @@ const DRINKS = [
     hasMilk:true, hasSweetener:true },
 
   { id:"hvl", name:"Haus Vanilla Latte", category:"sweet", desc:"Our scratch-made vanilla syrup with espresso and steamed milk.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced","Frozen"],
-    // Hot R: 2 shots(10) + 3 vanilla @24(72) + 9oz milk(162) = 244
-    // Iced R: CB(6) + 9oz milk(162) + 2.5 vanilla @24(60) = 228
-    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 2.5 vanilla @24(60) = 387
-    bases:{ Hot:{cal:244,fat:9,carbs:28,protein:10,sugar:23,milkOz:9}, Iced:{cal:228,fat:9,carbs:29,protein:9,sugar:29,milkOz:9}, Frozen:{cal:387,fat:11,carbs:67,protein:4,sugar:52,milkOz:3} },
+    // Standard syrup: Hot R=5, Iced/Frozen R=4
+    // Hot R: 2 shots(10) + 5 vanilla @24(120) + 9oz milk(162) = 292
+    // Iced R: CB(6) + 9oz milk(162) + 4 vanilla @24(96) = 264
+    // Frozen R: polar 2red(267) + CB(4) + 3oz milk(54) + 4 vanilla @24(96) = 421
+    bases:{ Hot:{cal:292,fat:9,carbs:46,protein:10,sugar:44,milkOz:9}, Iced:{cal:264,fat:9,carbs:38,protein:9,sugar:38,milkOz:9}, Frozen:{cal:421,fat:11,carbs:76,protein:4,sugar:60,milkOz:3} },
     hasMilk:true, hasSweetener:true },
 
   // BRIDGE
