@@ -509,7 +509,7 @@ const DRINKS = [
 
   { id:"cor", name:"Cortado", category:"traditional", desc:"Equal parts espresso and warm milk. Simple and perfect.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:80,fat:4,carbs:7,protein:5,sugar:6,milkOz:4} },
-    hasMilk:true, hasSweetener:false },
+    hasMilk:true, hasSweetener:false, fixedSize:{label:'8oz',oz:'8oz'} },
 
   { id:"fw", name:"Flat White", category:"traditional", desc:"Velvety microfoam over a ristretto double shot.", allergens:[], contains:["Dairy"], temps:["Hot"],
     bases:{ Hot:{cal:155,fat:8,carbs:13,protein:9,sugar:12,milkOz:8} },
@@ -661,10 +661,12 @@ function setTemp(drinkId, temp, el) {
   el.classList.add('active');
   // Update size cups to match hot vs cold oz labels
   const drink = DRINKS.find(d => d.id === drinkId);
-  const sizes = temp === 'Hot' ? HOT_SIZES : COLD_SIZES;
-  const cupsEl = card.querySelector('.size-cups');
-  const currentSize = card.querySelector('.size-cup.active')?.dataset.size || 'regular';
-  if (cupsEl) cupsEl.innerHTML = sizes.map(s => renderCup(drinkId, s, s.key === currentSize)).join('');
+  if (!drink.fixedSize) {
+    const sizes = temp === 'Hot' ? HOT_SIZES : COLD_SIZES;
+    const cupsEl = card.querySelector('.size-cups');
+    const currentSize = card.querySelector('.size-cup.active')?.dataset.size || 'regular';
+    if (cupsEl) cupsEl.innerHTML = sizes.map(s => renderCup(drinkId, s, s.key === currentSize)).join('');
+  }
   updateCard(drinkId);
 }
 
@@ -849,7 +851,9 @@ function renderGrid() {
     ).join("");
 
     const sizes = defaultTemp === 'Hot' ? HOT_SIZES : COLD_SIZES;
-    const sizeCups = `<div class="size-cups">${sizes.map(s => renderCup(drink.id, s, s.key === 'regular')).join('')}</div>`;
+    const sizeCups = drink.fixedSize
+      ? `<div class="size-cups"><span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:0.05em;color:var(--text);">${drink.fixedSize.oz}</span></div>`
+      : `<div class="size-cups">${sizes.map(s => renderCup(drink.id, s, s.key === 'regular')).join('')}</div>`;
 
     const milkSelect = drink.hasMilk ? `<select class="card-select sel-milk" onchange="updateCard('${drink.id}')">
       <option value="whole">Whole Milk</option>
@@ -929,7 +933,7 @@ if(new URLSearchParams(location.search).has('embed')){
     parent.postMessage({type:'germania-resize',height:Math.ceil(h)},'*');
   }
   setTimeout(reportHeight,200);
-  setInterval(reportHeight,500);
+  setInterval(reportHeight,800);
 }
 </script>
 </body>
