@@ -1,0 +1,110 @@
+﻿Sunshine Latte
+DF, GF
+
+
+Temp: Room Temp
+	Iced
+
+
+	Kids
+	R
+	L
+	Cold Brew
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Milk
+	1.5 small bells
+	3 small bells
+	2.5 large bells
+	Monin Honey
+	1 Pump
+	2 Pumps
+	3 Pumps
+	Monin Almond
+	1 Pump
+	2 Pumps
+	3 Pumps
+	Ice
+	Fill Cup
+	Fill Cup
+	Fill Cup
+	Honey Drizzle
+	On top
+	On top
+	On top
+	Frozen
+
+
+	Kids
+	R
+	L
+	Polar Powder
+	1 Red Scoop
+	2 Red Scoops
+	2 White Scoops
+	Cold Brew
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Milk
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Monin Honey
+	1 Pump
+	2 Pumps
+	3 Pumps
+	Monin Almond
+	1 Pump
+	2 Pumps
+	3 Pumps
+	Ice
+	Heaping Cup
+	Heaping Cup
+	Heaping Cup
+	Honey Drizzle
+	Sides & top
+	Sides & top
+	Sides & top
+	
+
+
+
+
+
+
+
+
+
+Sunshine Latte
+DF, GF
+
+
+Temp: Room Temp
+	Hot
+
+
+	S
+	R
+	L
+	Espresso
+	1 Shot
+	2 Shots
+	3 Shots
+	Monin Honey
+	1.5 Pumps
+	2.5 Pumps
+	3.5 Pumps
+	Monin Almond
+	1.5 Pumps
+	2.5 Pumps
+	3.5 Pumps
+	Steamed Milk
+	Stir & Fill
+	Stir & Fill
+	Stir & Fill
+	Honey Drizzle
+	On top
+	On top
+	On top

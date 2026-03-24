@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Drink Menu & Nutrition — Germania Brew Haus</title>
+  <link rel="icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/5a9816df7e3c3a7e13c823d5/82a42eeb-9208-4e69-ac85-d7b70a473f87/favicon.ico?format=100w"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f3f0;
+      --bg-deeper: #ffffff;
+      --bg-card: #ffffff;
+      --accent: #8b6914;
+      --accent-light: #a37d1e;
+      --accent-glow: rgba(139, 105, 20, 0.08);
+      --text: #1a1a1a;
+      --text-secondary: #555555;
+      --text-muted: #999999;
+      --border: #e0dcd6;
+      --green: #2d8a33;
+      --yellow: #a07b18;
+      --orange: #c0622a;
+      --red: #c0392b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Work Sans', -apple-system, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    .nav {
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100; padding: 0 32px;
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; height: 72px;
+    }
+    .nav-logo { height: 50px; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-mobile { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); padding: 8px; }
+    @media (max-width: 768px) { .nav-mobile { display: block; } }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+      text-align: center; padding: 80px 24px 48px;
+    }
+    .hero h1 {
+      font-family: 'Oswald', sans-serif; font-weight: 700;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .hero p {
+      font-weight: 300; font-size: 1.05rem; color: var(--text-secondary);
+      max-width: 520px; margin: 0 auto; line-height: 1.6;
+    }
+    .hero-divider { width: 60px; height: 3px; background: var(--accent); margin: 24px auto 0; }
+
+    /* CATEGORY TABS */
+    .filters {
+      background: var(--bg-deeper); border-bottom: 1px solid var(--border);
+      padding: 20px 24px; position: sticky; top: 72px; z-index: 90;
+    }
+    .filter-tabs {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+    }
+    .filter-tab {
+      font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+      padding: 8px 18px; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-tab:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+    .filter-tab.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+    /* GRID */
+    .grid-container { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+    .drink-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px;
+    }
+
+    /* CARD */
+    .drink-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      overflow: hidden; transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .drink-card:hover {
+      transform: translateY(-2px); border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+    .card-accent {
+      height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    .drink-card:hover .card-accent { opacity: 1; }
+    .card-body { padding: 24px 24px 20px; }
+
+    /* BADGES */
+    .card-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+    .card-badge {
+      font-family: 'Oswald', sans-serif; font-size: 0.58rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      display: inline-block; padding: 3px 8px;
+    }
+    .badge-season { color: var(--accent); background: var(--accent-glow); }
+    .badge-allergen { color: var(--green); background: rgba(45,138,51,0.08); }
+    /* TEMP TOGGLE */
+    .temp-toggle {
+      display: flex; width: 100%; margin-bottom: 16px;
+      border-radius: 10px; overflow: hidden; border: 1.5px solid var(--border);
+      background: rgba(0,0,0,0.015);
+    }
+    .badge-temp {
+      flex: 1; text-align: center; padding: 9px 0; cursor: pointer; transition: all 0.25s;
+      color: var(--text-muted); background: transparent; border: none;
+      font-family: 'Oswald', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .badge-temp:not(:last-child) { border-right: 1.5px solid var(--border); }
+    .badge-temp:hover { color: var(--accent-light); background: rgba(139,105,20,0.04); }
+    .badge-temp.active {
+      color: #fff; background: var(--accent);
+      font-weight: 700; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    /* SIZE CUPS */
+    .size-cups { display: flex; width: 100%; margin-bottom: 8px; align-items: flex-end; justify-content: center; gap: 0; }
+    .size-cup {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; padding: 12px 4px 10px; transition: all 0.25s;
+      border: 1.5px solid transparent; background: rgba(0,0,0,0.015);
+      border-radius: 0; position: relative;
+    }
+    .size-cup:first-child { border-radius: 10px 0 0 10px; }
+    .size-cup:last-child { border-radius: 0 10px 10px 0; }
+    .size-cup:not(:last-child) { border-right: 1px solid var(--border); }
+    .size-cup:hover { background: rgba(139,105,20,0.04); }
+    .size-cup.active { background: var(--accent-glow); border-color: var(--accent); z-index: 1; }
+    .size-cup svg { transition: transform 0.2s; color: var(--text-muted); }
+    .size-cup.active svg { transform: scale(1.08); color: var(--accent); }
+    .size-cup-label {
+      font-family: 'Oswald', sans-serif; font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .size-cup.active .size-cup-label { color: var(--accent); font-weight: 700; }
+    .size-cup-oz { font-size: 0.6rem; color: var(--text-muted); font-weight: 400; opacity: 0.7; }
+    .size-cup.active .size-cup-oz { color: var(--accent); opacity: 1; }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .card-name {
+      font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 1.35rem;
+      letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.2; flex: 1;
+    }
+    .card-desc {
+      font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;
+      font-weight: 300; margin-bottom: 16px;
+    }
+
+    /* PER-CARD CONTROLS */
+    .card-controls {
+      display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .card-select {
+      font-family: 'Work Sans', sans-serif; font-size: 0.72rem; font-weight: 500;
+      background: rgba(245, 243, 240, 0.6);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      color: var(--text-secondary);
+      border: 1px solid rgba(0,0,0,0.08);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer; appearance: none; -webkit-appearance: none;
+      
+      transition: all 0.25s ease; flex: 1; min-width: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+    .card-select:hover {
+      border-color: rgba(139, 105, 20, 0.3);
+      background: rgba(245, 243, 240, 0.85);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+    .card-select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.1), 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* NUTRITION SECTION */
+    .nutrition {
+      padding-top: 18px; border-top: 1px solid var(--border);
+    }
+    .nutrition-top {
+      display: flex; align-items: center; gap: 20px; margin-bottom: 14px;
+    }
+    .cal-display { display: flex; flex-direction: column; align-items: center; min-width: 72px; }
+    .cal-num {
+      font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 2.4rem; line-height: 1;
+      transition: color 0.4s ease;
+    }
+    .cal-label {
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); font-weight: 500; margin-top: 2px;
+    }
+
+    /* CIRCULAR PROGRESS */
+    .cal-ring { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+    .cal-ring svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+    .ring-bg { fill: none; stroke: var(--border); stroke-width: 5; }
+    .ring-fill {
+      fill: none; stroke-width: 5; stroke-linecap: round;
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+    }
+    .cal-ring-text {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .cal-ring-num {
+      font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.3rem; line-height: 1;
+      transition: color 0.4s ease;
+    }
+    .cal-ring-unit {
+      font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); margin-top: 1px;
+    }
+
+    /* MACRO BARS */
+    .macro-bars { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+    .macro-row { display: flex; align-items: center; gap: 8px; }
+    .macro-label {
+      font-size: 0.68rem; font-weight: 500; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; width: 48px; flex-shrink: 0;
+    }
+    .macro-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .macro-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .macro-fill.fat { background: #d4884a; }
+    .macro-fill.carbs { background: #3a9e97; }
+    .macro-fill.protein { background: #9b6b9e; }
+    .macro-fill.sugar { background: #c0392b; }
+    .macro-fill.added-sugar { background: #e74c3c; }
+    .macro-row.added-sugar-row { padding-left: 16px; }
+    .macro-row.added-sugar-row .macro-label { font-size: 0.6rem; color: var(--text-secondary); opacity: 0.8; }
+    .macro-val {
+      font-size: 0.72rem; font-weight: 600; color: var(--text-secondary);
+      width: 30px; text-align: right; flex-shrink: 0;
+      transition: color 0.3s ease;
+    }
+
+    /* Calorie counter animation */
+    .cal-animate { transition: transform 0.15s ease; }
+    .cal-animate.bump { transform: scale(1.15); }
+
+    /* FOOTER */
+    .footer {
+      background: #fff; border-top: 1px solid var(--border);
+      text-align: center; padding: 40px 24px;
+    }
+    .footer p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.8; }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    /* ANIMATIONS */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .drink-card { animation: slideUp 0.4s ease both; }
+    .drink-card:nth-child(2) { animation-delay: 0.04s; }
+    .drink-card:nth-child(3) { animation-delay: 0.08s; }
+    .drink-card:nth-child(4) { animation-delay: 0.12s; }
+    .drink-card:nth-child(5) { animation-delay: 0.16s; }
+    .drink-card:nth-child(6) { animation-delay: 0.2s; }
+    .drink-card:nth-child(7) { animation-delay: 0.24s; }
+    .drink-card:nth-child(8) { animation-delay: 0.28s; }
+    .drink-card:nth-child(9) { animation-delay: 0.32s; }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      .nav-inner { height: 60px; }
+      .nav-logo { height: 40px; }
+      .hero { padding: 48px 16px 32px; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 0.9rem; }
+      .filters { padding: 14px 16px; top: 60px; }
+      .filter-tabs { gap: 4px; }
+      .filter-tab { padding: 6px 12px; font-size: 0.7rem; }
+      .grid-container { padding: 20px 12px 60px; }
+      .drink-grid { grid-template-columns: 1fr; gap: 16px; }
+      .card-body { padding: 18px 16px 16px; }
+      .card-badges { gap: 4px; margin-bottom: 10px; }
+      .card-badge { font-size: 0.55rem; padding: 2px 7px; }
+      .card-name { font-size: 1.2rem; }
+      .card-desc { font-size: 0.78rem; margin-bottom: 12px; }
+
+      /* Stack controls vertically on small screens */
+      .card-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .card-controls .card-select:first-child:nth-last-child(1) {
+        grid-column: 1 / -1;
+      }
+      .card-controls .card-select:first-child:nth-last-child(3),
+      .card-controls .card-select:first-child:nth-last-child(3) ~ .card-select:nth-child(2) {
+        grid-column: span 1;
+      }
+      .card-controls .card-select:first-child:nth-last-child(3) ~ .card-select:nth-child(3) {
+        grid-column: 1 / -1;
+      }
+      .card-select { font-size: 0.72rem; padding: 9px 16px; border-radius: 20px; }
+
+      /* Nutrition stays horizontal but tighter */
+      .nutrition { padding-top: 14px; }
+      .nutrition-top { gap: 14px; }
+      .cal-ring { width: 68px; height: 68px; }
+      .cal-ring svg { width: 68px; height: 68px; }
+      .cal-ring-num { font-size: 1.1rem; }
+      .macro-label { font-size: 0.65rem; width: 42px; }
+      .macro-val { font-size: 0.68rem; width: 28px; }
+      .macro-track { height: 4px; }
+      .footer { padding: 30px 16px; }
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 1.7rem; }
+      .card-controls { grid-template-columns: 1fr; }
+      .card-name { font-size: 1.1rem; }
+      .nutrition-top { gap: 10px; }
+      .cal-ring { width: 60px; height: 60px; }
+      .cal-ring svg { width: 60px; height: 60px; }
+      .cal-ring-num { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="https://www.germaniabrewhaus.com">
+      <img class="nav-logo" src="https://images.squarespace-cdn.com/content/v1/5a9816df7e3c3a7e13c823d5/7b8ab17d-1e6a-4e5c-bcb9-4486c554221e/GBH+Logo+%282%29+copy.png?format=300w" alt="Germania Brew Haus">
+    </a>
+    <ul class="nav-links">
+      <li><a href="https://www.germaniabrewhaus.com">Home</a></li>
+      <li><a href="https://order.dripos.com/Germania-Brew-Haus">Order Now</a></li>
+      <li><a href="https://www.germaniabrewhaus.com/locations">Locations</a></li>
+      <li><a href="#" class="active">Nutrition</a></li>
+      <li><a href="https://www.germaniabrewhaus.com/whats-happening">What's Happening</a></li>
+    </ul>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex'">☰</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Drink Menu &amp; Nutrition</h1>
+  <p>Explore our handcrafted beverages. Customize each drink to see real-time nutrition info.</p>
+  <div class="hero-divider"></div>
+</section>
+
+<section class="filters">
+  <div class="filter-tabs" id="filterTabs"></div>
+</section>
+
+<section class="grid-container">
+  <div class="drink-grid" id="drinkGrid"></div>
+</section>
+
+<footer class="footer">
+  <p>
+    Calorie counts are estimates based on actual recipes and may vary by preparation.<br>
+    <a href="https://www.germaniabrewhaus.com">Germania Brew Haus</a> · 617 East Broadway, Alton IL · (618) 800-5130
+  </p>
+</footer>
+
+<script>
+const DRINKS = [
+  // SWEET COFFEE
+  { id:"hwm", name:"Haus White Mocha", category:"sweet", desc:"Our signature haus-made white chocolate sauce with espresso and steamed milk.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 4 WC sauce @44(176) + 9oz milk(162) = 348
+    // Iced R: CB 3oz(6) + 9oz milk(162) + 3 WC sauce @44(132) = 300
+    // Frozen R: polar 2red(267,8f,47c,32s,1p) + CB(6) + 3oz milk(54) + 3 WC @44(132) = 459
+    bases:{ Hot:{cal:348,fat:14,carbs:45,protein:13,sugar:37,milkOz:9}, Iced:{cal:300,fat:13,carbs:38,protein:11,sugar:38,milkOz:9}, Frozen:{cal:459,fat:15,carbs:76,protein:6,sugar:61,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"lwm", name:"Lemon White Mocha", category:"sweet", desc:"Bright haus-made lemon syrup meets our white chocolate sauce and espresso.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 2 WC sauce @44(88) + 2.5 lemon @24(60) + 9oz milk(162) = 320
+    // Iced R: CB(6) + 9oz milk(162) + 1.5 WC @44(66) + 2 lemon @24(48) = 282
+    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 1.5 WC @44(66) + 2 lemon @24(48) = 441
+    bases:{ Hot:{cal:320,fat:12,carbs:40,protein:11,sugar:32,milkOz:9}, Iced:{cal:282,fat:11,carbs:38,protein:10,sugar:38,milkOz:9}, Frozen:{cal:441,fat:13,carbs:76,protein:5,sugar:61,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"sun", name:"Sunshine Latte", category:"sweet", desc:"Honey and almond syrups with espresso, steamed milk, and a honey drizzle.", allergens:["DF","GF"], contains:[], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 2.5 Monin honey @25(62) + 2.5 Monin almond @25(62) + 9oz milk(162) + drizzle(20) = 317
+    // Iced R: CB(6) + 9oz milk(162) + 2 honey @25(50) + 2 almond @25(50) + drizzle(20) = 288
+    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 2 honey @25(50) + 2 almond @25(50) + drizzle(20) = 447
+    bases:{ Hot:{cal:317,fat:9,carbs:51,protein:9,sugar:50,milkOz:9}, Iced:{cal:288,fat:9,carbs:44,protein:9,sugar:44,milkOz:9}, Frozen:{cal:447,fat:11,carbs:82,protein:4,sugar:67,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"hvl", name:"Haus Vanilla Latte", category:"sweet", desc:"Our scratch-made vanilla syrup with espresso and steamed milk.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 3 vanilla @24(72) + 9oz milk(162) = 244
+    // Iced R: CB(6) + 9oz milk(162) + 2.5 vanilla @24(60) = 228
+    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 2.5 vanilla @24(60) = 387
+    bases:{ Hot:{cal:244,fat:9,carbs:28,protein:10,sugar:23,milkOz:9}, Iced:{cal:228,fat:9,carbs:29,protein:9,sugar:29,milkOz:9}, Frozen:{cal:387,fat:11,carbs:67,protein:4,sugar:52,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  // BRIDGE
+  { id:"chl", name:"Cinnamon Honey Latte", category:"bridge", desc:"Haus-made cinnamon honey syrup with espresso and steamed milk.", allergens:["DF","GF"], contains:[], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 5 CH @24(120) + 9oz milk(162) = 292
+    // Iced R: CB(6) + 9oz milk(162) + 4 CH @24(96) = 264
+    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 4 CH @24(96) = 423
+    bases:{ Hot:{cal:292,fat:9,carbs:40,protein:10,sugar:35,milkOz:9}, Iced:{cal:264,fat:9,carbs:38,protein:9,sugar:38,milkOz:9}, Frozen:{cal:423,fat:11,carbs:76,protein:4,sugar:61,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"lav", name:"Lavender Haze", category:"bridge", desc:"Vanilla latte topped with haus-made lavender cold foam.", allergens:[], contains:["Dairy"], temps:["Iced"],
+    // Iced R: CB(6) + 6oz milk(108) + 2 vanilla @24(48) + lavender cold foam(54) = 216
+    bases:{ Iced:{cal:216,fat:8,carbs:26,protein:7,sugar:22,milkOz:6} },
+    hasMilk:true, hasSweetener:true },
+
+  // ARTISANAL
+  { id:"hrc", name:"Horchata Cortado", category:"artisanal", desc:"Haus-made horchata syrup with a double shot in an 8oz cortado.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot"],
+    bases:{ Hot:{cal:151,fat:4,carbs:21,protein:5,sugar:17,milkOz:4} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"mss", name:"Maple Sea Salt Cortado", category:"artisanal", desc:"Pure maple syrup and sea salt with a double shot in an 8oz cortado.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot"],
+    bases:{ Hot:{cal:160,fat:4,carbs:27,protein:4,sugar:24,milkOz:4} },
+    hasMilk:true, hasSweetener:true },
+
+  // TEA & MORE
+  { id:"mp", name:"Matcha Peachu", category:"tea", desc:"Ceremonial-grade matcha with haus-made peach syrup and your choice of milk.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced","Frozen"],
+    // Hot R: matcha(10) + 9oz milk(162) + 4 peach @26(104) = 276
+    // Iced R: matcha(10) + 9oz milk(162) + 3.5 peach @26(91) = 263
+    // Frozen R: polar 2red(267) + matcha(10) + 3oz milk(54) + 3.5 peach @26(91) = 422
+    bases:{ Hot:{cal:276,fat:9,carbs:38,protein:10,sugar:31,milkOz:9}, Iced:{cal:263,fat:9,carbs:35,protein:10,sugar:28,milkOz:9}, Frozen:{cal:422,fat:11,carbs:75,protein:4,sugar:60,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"klm", name:"Key Lime Milkshake", category:"tea", desc:"Haus-made key lime syrup blended with half & half, topped with graham cracker.", allergens:[], contains:["Dairy","Soy"], temps:["Frozen"],
+    // Frozen R: polar 2red(267) + 2 small bells H&H 6oz @40(240) + 5 KL @21(105) + graham(15) = 627
+    bases:{ Frozen:{cal:627,fat:30,carbs:83,protein:6,sugar:67,milkOz:0} },
+    hasMilk:false, hasSweetener:true },
+
+  { id:"hcl", name:"Haus Chai Latte", category:"tea", desc:"Haus-made chai concentrate steamed with milk and dusted with cinnamon.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced","Frozen"],
+    // Hot R: chai(33) + 9oz milk(162) = 195
+    // Iced R: chai(33) + 9oz milk(162) = 195 (same — milk volume similar)
+    // Frozen R: polar 2red(267) + chai(33) + 3oz milk(54) = 354
+    bases:{ Hot:{cal:195,fat:9,carbs:22,protein:10,sugar:18,milkOz:9}, Iced:{cal:195,fat:9,carbs:22,protein:10,sugar:18,milkOz:9}, Frozen:{cal:354,fat:11,carbs:61,protein:4,sugar:42,milkOz:3} },
+    hasMilk:true, hasSweetener:false },
+
+  // CLASSICS
+  { id:"esp", name:"Espresso", category:"classics", desc:"Double shot of our house blend. Bold, smooth, no frills.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot"],
+    bases:{ Hot:{cal:10,fat:0,carbs:1,protein:0,sugar:0,milkOz:0} },
+    hasMilk:false, hasSweetener:false },
+
+  { id:"ame", name:"Americano", category:"classics", desc:"Espresso pulled over hot water. Clean and strong.", allergens:["DF","GF","Vegan"], contains:[], temps:["Hot","Iced"],
+    bases:{ Hot:{cal:15,fat:0,carbs:2,protein:1,sugar:0,milkOz:0}, Iced:{cal:15,fat:0,carbs:2,protein:1,sugar:0,milkOz:0} },
+    hasMilk:false, hasSweetener:false },
+
+  { id:"lat", name:"Latte", category:"classics", desc:"Silky steamed milk with a double shot of espresso.", allergens:[], contains:["Dairy"], temps:["Hot","Iced","Frozen"],
+    // Hot R: espresso(10) + 9oz milk(162) = 172 → ~190 with foam
+    // Iced R: espresso(10) + 9oz milk(162) = 172
+    // Frozen R: polar 2red(267) + espresso(10) + 3oz milk(54) = 331
+    bases:{ Hot:{cal:190,fat:9,carbs:16,protein:10,sugar:15,milkOz:9}, Iced:{cal:172,fat:9,carbs:15,protein:10,sugar:14,milkOz:9}, Frozen:{cal:331,fat:11,carbs:53,protein:4,sugar:37,milkOz:3} },
+    hasMilk:true, hasSweetener:false },
+
+  { id:"cap", name:"Cappuccino", category:"classics", desc:"Equal parts espresso, steamed milk, and thick foam.", allergens:[], contains:["Dairy"], temps:["Hot"],
+    bases:{ Hot:{cal:120,fat:6,carbs:10,protein:7,sugar:10,milkOz:6} },
+    hasMilk:true, hasSweetener:false },
+
+  { id:"cor", name:"Cortado", category:"classics", desc:"Equal parts espresso and warm milk. Simple and perfect.", allergens:[], contains:["Dairy"], temps:["Hot"],
+    bases:{ Hot:{cal:80,fat:4,carbs:7,protein:5,sugar:6,milkOz:4} },
+    hasMilk:true, hasSweetener:false },
+
+  { id:"fw", name:"Flat White", category:"classics", desc:"Velvety microfoam over a ristretto double shot.", allergens:[], contains:["Dairy"], temps:["Hot"],
+    bases:{ Hot:{cal:155,fat:8,carbs:13,protein:9,sugar:12,milkOz:8} },
+    hasMilk:true, hasSweetener:false },
+
+  { id:"cb", name:"Cold Brew", category:"classics", desc:"Slow-steeped for a smooth, low-acid finish.", allergens:["DF","GF","Vegan"], contains:[], temps:["Iced"],
+    bases:{ Iced:{cal:5,fat:0,carbs:0,protein:0,sugar:0,milkOz:0} },
+    hasMilk:false, hasSweetener:false },
+
+  { id:"il", name:"Iced Latte", category:"classics", desc:"Chilled milk and espresso over ice.", allergens:[], contains:["Dairy"], temps:["Iced"],
+    bases:{ Iced:{cal:170,fat:8,carbs:14,protein:9,sugar:13,milkOz:9} },
+    hasMilk:true, hasSweetener:false },
+
+  { id:"hc", name:"Hot Chocolate", category:"classics", desc:"Rich haus-made chocolate with steamed milk. A warm hug in a cup.", allergens:[], contains:["Dairy"], temps:["Hot"],
+    bases:{ Hot:{cal:270,fat:12,carbs:30,protein:11,sugar:24,milkOz:9} },
+    hasMilk:true, hasSweetener:true },
+
+  // SEASONAL
+  { id:"gel", name:"Golden Eagle Latte", category:"seasonal", desc:"Haus mocha and Monin white chocolate sauce with espresso, steamed milk, and caramel drizzle.", allergens:["GF"], contains:["Dairy","Soy"], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 2 Mocha @40(80) + 1.5 Monin WC @60(90) + 9oz milk(162) + caramel(30) = 372
+    // Iced R: CB(6) + 9oz milk(162) + 1.5 Mocha @40(60) + 1 Monin WC @60(60) + caramel(30) = 318
+    // Frozen R: polar 2red(267) + CB(6) + 3oz milk(54) + 2 Mocha @40(80) + 2 Monin WC @60(120) + caramel(30) = 557
+    bases:{ Hot:{cal:372,fat:13,carbs:48,protein:11,sugar:46,milkOz:9}, Iced:{cal:318,fat:12,carbs:40,protein:11,sugar:38,milkOz:9}, Frozen:{cal:557,fat:15,carbs:92,protein:7,sugar:75,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+
+  { id:"ccs", name:"Chocolate Covered Strawberry", category:"seasonal", desc:"Hot chocolate with Monin wild strawberry syrup and espresso.", allergens:[], contains:["Dairy"], temps:["Hot","Iced","Frozen"],
+    // Hot R: 2 shots(10) + 1.5 HC powder @60(90) + 3.5 Monin WS @25(88) + 9oz milk(162) = 350
+    // Iced R: CB(6) + 9oz milk(162) + 1.5 Mocha sauce @40(60) + 3 WS @25(75) = 303
+    // Frozen R: 2 HC @60(120) + CB(6) + 3oz milk(54) + 3 WS @25(75) = 255
+    bases:{ Hot:{cal:350,fat:12,carbs:51,protein:11,sugar:47,milkOz:9}, Iced:{cal:303,fat:11,carbs:41,protein:10,sugar:41,milkOz:9}, Frozen:{cal:255,fat:7,carbs:43,protein:5,sugar:39,milkOz:3} },
+    hasMilk:true, hasSweetener:true },
+];
+
+const SIZE_MULT = { small:0.75, regular:1, large:1.3 };
+const MILK_ADJ = { whole:0, oat:-3, almond:-10, skim:-6 };
+const SWEET_MULT = { none:0, half:0.5, regular:1, extra:1.5 };
+const MILK_SUGAR_OZ = { whole:1.5, oat:1, almond:0.3, skim:1.5, none:0 };
+const HOT_SIZES = [ {key:'small', label:'S', oz:'12oz'}, {key:'regular', label:'R', oz:'16oz'}, {key:'large', label:'L', oz:'20oz'} ];
+const COLD_SIZES = [ {key:'small', label:'S', oz:'10oz'}, {key:'regular', label:'R', oz:'16oz'}, {key:'large', label:'L', oz:'24oz'} ];
+const CIRCUMFERENCE = 2 * Math.PI * 34;
+
+const CATEGORIES = [
+  { id:"all", label:"All" },
+  { id:"sweet", label:"Sweet Coffee" },
+  { id:"bridge", label:"Bridge" },
+  { id:"artisanal", label:"Artisanal" },
+  { id:"tea", label:"Tea & More" },
+  { id:"classics", label:"Classics" },
+  { id:"seasonal", label:"Seasonal" },
+  { id:"ingredients", label:"☕ How We Calculate" },
+];
+
+const INGREDIENTS = [
+  { name:"Espresso Shot", serving:"1 double shot", cal:10, fat:0, carbs:1, protein:0, sugar:0, note:"Our house blend, pulled fresh" },
+  { name:"Cold Brew", serving:"per oz", cal:2, fat:0, carbs:0, protein:0, sugar:0, note:"Slow-steeped 20 hours" },
+  { name:"Whole Milk", serving:"per oz", cal:18, fat:1, carbs:1.5, protein:1, sugar:1.5, note:"Standard dairy milk" },
+  { name:"Oat Milk", serving:"per oz", cal:15, fat:0.6, carbs:2, protein:0.4, sugar:1, note:"Our default alt milk" },
+  { name:"Almond Milk", serving:"per oz", cal:5, fat:0.3, carbs:0.5, protein:0.2, sugar:0.3, note:"Lightest option" },
+  { name:"Skim Milk", serving:"per oz", cal:11, fat:0.1, carbs:1.5, protein:1, sugar:1.5, note:"Fat-free dairy" },
+  { name:"Half & Half", serving:"per oz", cal:40, fat:3.5, carbs:1.3, protein:0.9, sugar:1.3, note:"Used in milkshakes" },
+  { name:"Haus White Chocolate Sauce", serving:"per sauce pump (0.5oz)", cal:44, fat:1.2, carbs:8, protein:0.7, sugar:8, note:"Sugar, fructose, cocoa butter, nonfat dry milk, vanilla bean, soy lecithin. 64oz bottle = 128 pumps. Calculated from recipe: ~5640 cal per batch." },
+  { name:"Haus Mocha / Dark Chocolate", serving:"per sauce pump (0.5oz)", cal:40, fat:1.2, carbs:6, protein:0.4, sugar:5.5, note:"House-made dark chocolate sauce. 64oz bottle = 128 sauce pumps at 0.5oz each." },
+  { name:"Haus Lemon Syrup", serving:"per syrup pump (0.25oz)", cal:24, fat:0, carbs:6.3, protein:0, sugar:6.3, note:"Sugar 625g, water 312g, lemon extract. ~2425 cal per bottle / ~100 pumps." },
+  { name:"Haus Lavender Syrup", serving:"per syrup pump (0.25oz)", cal:24, fat:0, carbs:6.3, protein:0, sugar:6.3, note:"Sugar 625g, water 500g, lavender buds (steeped & strained). ~2425 cal per bottle / ~100 pumps." },
+  { name:"Haus Horchata Syrup", serving:"per syrup pump (0.25oz)", cal:23, fat:0, carbs:5.6, protein:0, sugar:5.6, note:"Cinnamon sticks, rice (blended & strained), vanilla extract, sugar. ~2283 cal per bottle / ~100 pumps." },
+  { name:"Haus Peach Syrup", serving:"per syrup pump (0.25oz)", cal:26, fat:0, carbs:6.7, protein:0, sugar:6.7, note:"Granulated + brown sugar, water, salt, citric acid, peach & vanilla extract. ~2614 cal per bottle / ~100 pumps." },
+  { name:"Haus Key Lime Syrup", serving:"per syrup pump (0.25oz)", cal:21, fat:0, carbs:5.3, protein:0, sugar:5.3, note:"Key lime juice, sugar, vanilla extract. ~2148 cal per bottle / ~100 pumps." },
+  { name:"Haus Cinnamon Honey Syrup", serving:"per syrup pump (0.25oz)", cal:24, fat:0, carbs:6, protein:0, sugar:6, note:"Haus-made cinnamon and honey blend. ~2400 cal per bottle est. / ~100 pumps." },
+  { name:"Monin Honey Syrup", serving:"per syrup pump (0.25oz)", cal:25, fat:0, carbs:6.5, protein:0, sugar:6.25, note:"Pure cane sugar, water, honey, natural flavors. 100 cal per 1oz serving (monin.us). Used in Sunshine Latte." },
+  { name:"Monin Almond (Orgeat) Syrup", serving:"per syrup pump (0.25oz)", cal:25, fat:0, carbs:6.25, protein:0, sugar:6.25, note:"Pure cane sugar, water, natural almond flavor, citric acid. 100 cal per 1oz serving (monin.us). Used in Sunshine Latte." },
+  { name:"Monin Wild Strawberry Syrup", serving:"per syrup pump (0.25oz)", cal:25, fat:0, carbs:6.25, protein:0, sugar:6.25, note:"Pure cane sugar, water, natural flavors. 100 cal per 1oz serving (monin.us). Used in Chocolate Covered Strawberry." },
+  { name:"Monin White Chocolate Sauce", serving:"per sauce pump (0.5oz)", cal:60, fat:0.5, carbs:11, protein:1, sugar:11, note:"60 cal per 0.5oz serving (monin.us). Sauce pumps are 0.5oz. Used in Golden Eagle." },
+  { name:"Pure Maple Syrup", serving:"per syrup pump (0.25oz)", cal:26, fat:0, carbs:6.7, protein:0, sugar:6, note:"Pure maple syrup (Schnucks). ~52 cal per tbsp / USDA. Used in Maple Sea Salt Cortado." },
+  { name:"Hot Chocolate Powder", serving:"per scoop", cal:60, fat:2, carbs:10, protein:1, sugar:8, note:"Rich cocoa powder blend" },
+  { name:"Frozenta Polar Powder (2 red scoops)", serving:"1/3 cup (R size)", cal:267, fat:8, carbs:47, protein:1, sugar:32, note:"Frozenta Polar Powder Blended Drink Mix. 200 cal per 45g (1/4 cup) serving. 2 red scoops = 1/3 cup. 2 white scoops (L) = 1/2 cup = 400 cal. Contains Dairy, Soy. Source: frozenta.com" },
+  { name:"Honey Drizzle", serving:"per drizzle", cal:20, fat:0, carbs:5, protein:0, sugar:5, note:"Finishing touch" },
+  { name:"Caramel Drizzle (Monin)", serving:"per drizzle (~0.25oz)", cal:30, fat:0.25, carbs:6, protein:0.5, sugar:5.5, note:"Monin Caramel Sauce — 60 cal per 0.5oz (monin.us). Drizzle estimated at ~half a sauce pump. Used in Golden Eagle." },
+  { name:"Toppings", serving:"per serving", cal:15, fat:1, carbs:2, protein:0, sugar:1, note:"Graham cracker, cookie crumbs, peppermint flakes, sprinkles, cinnamon" },
+];
+
+let activeCategory = "all";
+
+function getCalColor(cal) {
+  if (cal <= 50) return "var(--green)";
+  if (cal <= 200) return "var(--yellow)";
+  if (cal <= 350) return "var(--orange)";
+  return "var(--red)";
+}
+
+function calcNutrition(drink, size, milk, sweet, temp) {
+  const base = drink.bases[temp] || Object.values(drink.bases)[0];
+  const sm = SIZE_MULT[size];
+  let cal = base.cal * sm;
+  let fat = base.fat * sm;
+  let carbs = base.carbs * sm;
+  let protein = base.protein * sm;
+  let sugar = base.sugar * sm;
+
+  if (drink.hasMilk && milk !== "whole") {
+    const milkOz = base.cal > 100 ? 9 * sm : 4 * sm;
+    cal += MILK_ADJ[milk] * milkOz;
+    if (milk === "almond") { fat -= 3*sm; protein -= 3*sm; }
+    if (milk === "oat") { carbs += 3*sm; protein -= 2*sm; }
+    if (milk === "skim") { fat -= 5*sm; }
+    if (milk === "none") { fat -= 5*sm; protein -= 5*sm; carbs -= 5*sm; }
+  }
+  if (drink.hasSweetener && sweet !== "regular") {
+    const sweetCal = base.sugar * 0.6;
+    const diff = SWEET_MULT[sweet] - 1;
+    cal += diff * sweetCal * 4 * sm;
+    sugar += diff * sweetCal * sm;
+    carbs += diff * sweetCal * sm;
+  }
+  // Calculate milk sugar to derive added sugar
+  let milkSugar = 0;
+  if (drink.hasMilk && base.milkOz) {
+    const milkOzTotal = base.milkOz * sm;
+    const milkKey = milk || "whole";
+    milkSugar = (MILK_SUGAR_OZ[milkKey] || 0) * milkOzTotal;
+  }
+  const totalSugar = Math.round(Math.max(0, sugar));
+  const addedSugar = Math.round(Math.max(0, totalSugar - milkSugar));
+
+  return {
+    cal: Math.round(Math.max(0, cal)),
+    fat: Math.round(Math.max(0, fat)),
+    carbs: Math.round(Math.max(0, carbs)),
+    protein: Math.round(Math.max(0, protein)),
+    sugar: totalSugar,
+    addedSugar
+  };
+}
+
+// Animate a number counting up/down
+function animateNumber(el, from, to, duration) {
+  const start = performance.now();
+  const step = (now) => {
+    const t = Math.min((now - start) / duration, 1);
+    const ease = t < 0.5 ? 2*t*t : -1+(4-2*t)*t; // easeInOut
+    el.textContent = Math.round(from + (to - from) * ease);
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function setTemp(drinkId, temp, el) {
+  const card = document.getElementById(`card-${drinkId}`);
+  card.querySelectorAll('.badge-temp').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  // Update size cups to match hot vs cold oz labels
+  const drink = DRINKS.find(d => d.id === drinkId);
+  const sizes = temp === 'Hot' ? HOT_SIZES : COLD_SIZES;
+  const cupsEl = card.querySelector('.size-cups');
+  const currentSize = card.querySelector('.size-cup.active')?.dataset.size || 'regular';
+  if (cupsEl) cupsEl.innerHTML = sizes.map(s => renderCup(drinkId, s, s.key === currentSize)).join('');
+  updateCard(drinkId);
+}
+
+function setSize(drinkId, size, el) {
+  const card = document.getElementById(`card-${drinkId}`);
+  card.querySelectorAll('.size-cup').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  updateCard(drinkId);
+}
+
+function cupSVG(size) {
+  const s = size === 'small' ? 0.72 : size === 'regular' ? 0.88 : 1;
+  const w = Math.round(36 * s);
+  const h = Math.round(52 * s);
+  return `<svg width="${w}" height="${h}" viewBox="0 0 36 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Lid dome -->
+    <path d="M6 8 Q6 5 9 5 L27 5 Q30 5 30 8" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1"/>
+    <!-- Lid sip hole -->
+    <ellipse cx="18" cy="5.5" rx="3" ry="1.2" fill="currentColor" opacity="0.12"/>
+    <!-- Lid rim -->
+    <path d="M4.5 8 L31.5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+    <!-- Cup body -->
+    <path d="M6 9 L8.5 46 Q9 49 12 49 L24 49 Q27 49 27.5 46 L30 9 Z" fill="currentColor" opacity="0.06" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+    <!-- Corrugated sleeve -->
+    <rect x="7.5" y="19" width="21" height="13" rx="1" fill="currentColor" opacity="0.07"/>
+    <path d="M8 22 L28 22 M8 25 L28 25 M8 28 L28 28" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+    <!-- Logo dot on sleeve -->
+    <circle cx="18" cy="25.5" r="2.5" fill="currentColor" opacity="0.08" stroke="currentColor" stroke-width="0.6" opacity="0.12"/>
+  </svg>`;
+}
+
+function renderCup(drinkId, sizeObj, isActive) {
+  return `<div class="size-cup ${isActive ? 'active' : ''}" data-size="${sizeObj.key}" onclick="setSize('${drinkId}','${sizeObj.key}',this)">
+    ${cupSVG(sizeObj.key)}
+    <span class="size-cup-label">${sizeObj.label}</span>
+    <span class="size-cup-oz">${sizeObj.oz}</span>
+  </div>`;
+}
+
+function updateCard(drinkId) {
+  const drink = DRINKS.find(d => d.id === drinkId);
+  if (!drink) return;
+
+  const card = document.getElementById(`card-${drinkId}`);
+  if (!card) return;
+
+  const size = card.querySelector('.size-cup.active')?.dataset.size || 'regular';
+  const milk = card.querySelector('.sel-milk')?.value || 'whole';
+  const sweet = card.querySelector('.sel-sweet')?.value || 'regular';
+  const temp = card.querySelector('.badge-temp.active')?.textContent || drink.temps[0];
+
+  const n = calcNutrition(drink, size, milk, sweet, temp);
+  const color = getCalColor(n.cal);
+  const maxCal = 700;
+  const pct = Math.min(n.cal / maxCal, 1);
+  const offset = CIRCUMFERENCE * (1 - pct);
+
+  // Animate calorie number
+  const calEl = card.querySelector('.cal-ring-num');
+  const oldCal = parseInt(calEl.textContent) || 0;
+  animateNumber(calEl, oldCal, n.cal, 600);
+  calEl.style.color = color;
+
+  // Animate ring
+  const ring = card.querySelector('.ring-fill');
+  ring.style.strokeDashoffset = offset;
+  ring.style.stroke = color;
+
+  // Bump animation
+  const ringWrap = card.querySelector('.cal-ring');
+  ringWrap.classList.add('bump');
+  setTimeout(() => ringWrap.classList.remove('bump'), 200);
+
+  // Animate macro bars + values
+  const maxFat=30, maxCarbs=100, maxProtein=15, maxSugar=80;
+  const macros = [
+    { cls:'fat', val:n.fat, max:maxFat },
+    { cls:'carbs', val:n.carbs, max:maxCarbs },
+    { cls:'protein', val:n.protein, max:maxProtein },
+    { cls:'sugar', val:n.sugar, max:maxSugar },
+    { cls:'added-sugar', val:n.addedSugar, max:maxSugar },
+  ];
+  macros.forEach(m => {
+    const fill = card.querySelector(`.macro-fill.${m.cls}`);
+    const valEl = card.querySelector(`.mv-${m.cls}`);
+    if (fill) fill.style.width = Math.min(m.val/m.max*100, 100) + '%';
+    if (valEl) {
+      const oldVal = parseInt(valEl.textContent) || 0;
+      animateNumber(valEl, oldVal, m.val, 500);
+    }
+  });
+}
+
+function renderTabs() {
+  const el = document.getElementById("filterTabs");
+  el.innerHTML = CATEGORIES.map(c =>
+    `<button class="filter-tab ${c.id === activeCategory ? 'active' : ''}" data-cat="${c.id}">${c.label}</button>`
+  ).join("");
+  el.querySelectorAll(".filter-tab").forEach(btn => {
+    btn.onclick = () => { activeCategory = btn.dataset.cat; renderTabs(); renderGrid(); };
+  });
+}
+
+function renderIngredients() {
+  const grid = document.getElementById("drinkGrid");
+  grid.innerHTML = `
+    <div style="grid-column:1/-1; margin-bottom: 8px;">
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.7; max-width:700px; font-weight:300;">
+        Every calorie count on this page is calculated from our actual recipes — real pump counts, real milk volumes, real ingredients. Here's what goes into each component.
+      </p>
+    </div>
+    ${INGREDIENTS.map((ing, i) => {
+      const color = getCalColor(ing.cal);
+      const maxCal = 60;
+      const pct = Math.min(ing.cal / maxCal, 1);
+      const offset = CIRCUMFERENCE * (1 - pct);
+      return `
+        <div class="drink-card" style="animation-delay:${i * 0.03}s">
+          <div class="card-accent"></div>
+          <div class="card-body">
+            <div class="card-top">
+              <div class="card-name" style="font-size:1.15rem">${ing.name}</div>
+            </div>
+            <div style="display:flex; gap:12px; margin-bottom:10px; flex-wrap:wrap;">
+              <span class="card-badge badge-temp">${ing.serving}</span>
+            </div>
+            <div class="card-desc">${ing.note}</div>
+            <div class="nutrition">
+              <div class="nutrition-top">
+                <div class="cal-ring cal-animate">
+                  <svg viewBox="0 0 80 80">
+                    <circle class="ring-bg" cx="40" cy="40" r="34"/>
+                    <circle class="ring-fill" cx="40" cy="40" r="34"
+                      stroke="${color}"
+                      stroke-dasharray="${CIRCUMFERENCE}"
+                      stroke-dashoffset="${offset}"/>
+                  </svg>
+                  <div class="cal-ring-text">
+                    <span class="cal-ring-num" style="color:${color}">${ing.cal}</span>
+                    <span class="cal-ring-unit">cal</span>
+                  </div>
+                </div>
+                <div class="macro-bars">
+                  <div class="macro-row"><span class="macro-label">Fat</span><div class="macro-track"><div class="macro-fill fat" style="width:${Math.min(ing.fat/4*100,100)}%"></div></div><span class="macro-val">${ing.fat}g</span></div>
+                  <div class="macro-row"><span class="macro-label">Carbs</span><div class="macro-track"><div class="macro-fill carbs" style="width:${Math.min(ing.carbs/10*100,100)}%"></div></div><span class="macro-val">${ing.carbs}g</span></div>
+                  <div class="macro-row"><span class="macro-label">Protein</span><div class="macro-track"><div class="macro-fill protein" style="width:${Math.min(ing.protein/2*100,100)}%"></div></div><span class="macro-val">${ing.protein}g</span></div>
+                  <div class="macro-row"><span class="macro-label">Sugar</span><div class="macro-track"><div class="macro-fill sugar" style="width:${Math.min(ing.sugar/8*100,100)}%"></div></div><span class="macro-val">${ing.sugar}g</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join("")}`;
+}
+
+function renderGrid() {
+  if (activeCategory === "ingredients") { renderIngredients(); return; }
+  const grid = document.getElementById("drinkGrid");
+  const filtered = activeCategory === "all" ? DRINKS : DRINKS.filter(d => d.category === activeCategory);
+  const maxFat=30, maxCarbs=100, maxProtein=15, maxSugar=80;
+
+  grid.innerHTML = filtered.map(drink => {
+    const defaultTemp = drink.temps[0];
+    const n = calcNutrition(drink, 'regular', 'whole', 'regular', defaultTemp);
+    const color = getCalColor(n.cal);
+    const pct = Math.min(n.cal / 700, 1);
+    const offset = CIRCUMFERENCE * (1 - pct);
+    const isSpecial = ["sweet","bridge","artisanal","tea"].includes(drink.category);
+
+    const allergenBadges = drink.allergens.map(a => `<span class="card-badge badge-allergen">${a}</span>`).join("");
+    const tempButtons = drink.temps.map((t, i) =>
+      `<div class="badge-temp ${i === 0 ? 'active' : ''}" onclick="setTemp('${drink.id}','${t}',this)">${t}</div>`
+    ).join("");
+
+    const sizes = defaultTemp === 'Hot' ? HOT_SIZES : COLD_SIZES;
+    const sizeCups = `<div class="size-cups">${sizes.map(s => renderCup(drink.id, s, s.key === 'regular')).join('')}</div>`;
+
+    const milkSelect = drink.hasMilk ? `<select class="card-select sel-milk" onchange="updateCard('${drink.id}')">
+      <option value="whole">Whole Milk</option>
+      <option value="oat">Oat Milk</option>
+      <option value="almond">Almond Milk</option>
+      <option value="skim">Skim</option>
+    </select>` : '';
+
+    const sweetSelect = drink.hasSweetener ? `<select class="card-select sel-sweet" onchange="updateCard('${drink.id}')">
+      <option value="regular" selected>Regular Sweet</option>
+      <option value="half">Half Sweet</option>
+      <option value="none">No Sweetener</option>
+      <option value="extra">Extra Sweet</option>
+    </select>` : '';
+
+    return `
+      <div class="drink-card" id="card-${drink.id}">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-badges">
+            ${isSpecial ? `<span class="card-badge badge-season">✦ Spring 2026</span>` : ""}
+            ${allergenBadges}
+            ${drink.temps.length === 1 ? `<span class="card-badge" style="color:var(--text-muted);background:rgba(0,0,0,0.03)">${drink.temps[0]}</span>` : ''}
+          </div>
+          <div class="card-top">
+            <div class="card-name">${drink.name}</div>
+          </div>
+          <div class="card-desc">${drink.desc}${drink.contains.length ? ` <em style="color:var(--text-muted);font-size:0.72rem">Contains: ${drink.contains.join(", ")}</em>` : ""}</div>
+
+          ${sizeCups}
+          ${drink.temps.length > 1 ? `<div class="temp-toggle">${tempButtons}</div>` : ''}
+
+          <div class="card-controls">
+            ${milkSelect}
+            ${sweetSelect}
+          </div>
+
+          <div class="nutrition">
+            <div class="nutrition-top">
+              <div class="cal-ring cal-animate">
+                <svg viewBox="0 0 80 80">
+                  <circle class="ring-bg" cx="40" cy="40" r="34"/>
+                  <circle class="ring-fill" cx="40" cy="40" r="34"
+                    stroke="${color}"
+                    stroke-dasharray="${CIRCUMFERENCE}"
+                    stroke-dashoffset="${offset}"/>
+                </svg>
+                <div class="cal-ring-text">
+                  <span class="cal-ring-num" style="color:${color}">${n.cal}</span>
+                  <span class="cal-ring-unit">cal</span>
+                </div>
+              </div>
+              <div class="macro-bars">
+                <div class="macro-row"><span class="macro-label">Fat</span><div class="macro-track"><div class="macro-fill fat" style="width:${Math.min(n.fat/maxFat*100,100)}%"></div></div><span class="macro-val mv-fat">${n.fat}g</span></div>
+                <div class="macro-row"><span class="macro-label">Carbs</span><div class="macro-track"><div class="macro-fill carbs" style="width:${Math.min(n.carbs/maxCarbs*100,100)}%"></div></div><span class="macro-val mv-carbs">${n.carbs}g</span></div>
+                <div class="macro-row"><span class="macro-label">Protein</span><div class="macro-track"><div class="macro-fill protein" style="width:${Math.min(n.protein/maxProtein*100,100)}%"></div></div><span class="macro-val mv-protein">${n.protein}g</span></div>
+                <div class="macro-row"><span class="macro-label">Sugar</span><div class="macro-track"><div class="macro-fill sugar" style="width:${Math.min(n.sugar/maxSugar*100,100)}%"></div></div><span class="macro-val mv-sugar">${n.sugar}g</span></div>
+                <div class="macro-row added-sugar-row"><span class="macro-label">Added Sugar</span><div class="macro-track"><div class="macro-fill added-sugar" style="width:${Math.min(n.addedSugar/maxSugar*100,100)}%"></div></div><span class="macro-val mv-added-sugar">${n.addedSugar}g</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+renderTabs();
+renderGrid();
+</script>
+</body>
+</html>

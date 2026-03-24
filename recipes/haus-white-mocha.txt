@@ -1,0 +1,91 @@
+﻿Haus White Mocha
+GF
+Contains: Dairy, Soy
+Temp: does NOT need refrigeration
+	Iced
+
+
+	Kids
+	R
+	L
+	Cold Brew
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Milk
+	1.5 small bells
+	3 small bells
+	2.5 large bells
+	Haus White Chocolate
+(Extra Pump)
+	2 Pump
+	3 Pumps
+	4 Pumps
+	Ice
+	Fill Cup
+	Fill Cup
+	Fill Cup
+	Frozen
+
+
+	Kids
+	R
+	L
+	Polar Powder
+	1 Red Scoop
+	2 Red Scoops
+	2 White Scoops
+	Cold Brew
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Milk
+	0.5 small bell
+	1 small bell
+	1 large bell
+	Haus White Chocolate
+(Extra Pump)
+	2 Pump
+	3 Pumps
+	4 Pumps
+	Ice
+	Heaping Cup
+	Heaping Cup
+	Heaping Cup
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+Haus White Mocha
+GF
+Contains: Dairy, Soy
+Temp: does NOT need refrigeration
+	Hot
+
+
+	S
+	R
+	L
+	Espresso
+	1 Shot
+	2 Shots
+	3 Shots
+	Haus White Chocolate
+(Extra Pump)
+	3 Pumps
+	4 Pumps
+	5 Pumps
+	Steamed Milk
+	Stir & Fill
+	Stir & Fill
+	Stir & Fill
